@@ -1,0 +1,43 @@
+invoice:
+  billing:
+    iban: CO123123123123
+    bic: COCOCOCO
+  client:
+    name: Clientify gmbh.
+    tax-id: "43214321"
+    address:
+      street: 321 Fake street
+      area: Client Zone
+      post-code: XYZ 123
+      coutnry: Asdfland
+  company:
+    name: Cool Stuff Ltd.
+    tax-id: "12341234"
+    address:
+      street: 123 Fake Street
+      area: Cool Zone
+      post-code: ABC 123
+      coutnry: Coolworld
+  contact:
+    email: cool@cool.cool
+    phone: "+99123123"
+  metadata:
+    number: 1
+    issue-date: 26/01/2021
+    pay-by-date: 26/02/2021
+  notes: This invoice refers to the period 01/01/2021 to 30/01/2021
+  order:
+    lines:
+    - item: This really cool thing
+      quantity: 4
+      cost: €3.00
+      total: €12.00
+    - item: This other thing
+      quantity: 2
+      cost: €2.50
+      total: €5.00
+    subtotal: €17.00
+    tax-name: EC sales
+    tax-rate: 0.0%
+    tax-amount: €0.00
+    total: €17.00

@@ -1,0 +1,39 @@
+---
+billing:
+  iban: CO123123123123
+  bic: COCOCOCO
+clients:
+  clientify:
+    invoice-prefix: Clientify
+    company:
+      address:
+        area: Client Zone
+        country: Asdfland
+        post-code: XYZ 123
+        street: 321 Fake street
+      name: Clientify gmbh.
+      tax-id: 43214321
+    tax: ec
+company:
+  name: Cool Stuff Ltd.
+  tax-id: 12341234
+  address:
+    street: 123 Fake Street
+    area: Cool Zone
+    post-code: ABC 123
+    country: Coolworld
+contact:
+  email: cool@cool.cool
+  phone: +99123123
+currency: EUR
+inventory:
+  other-thing:
+    name: This other thing
+    price: 250
+  cool-thing:
+    name: This really cool thing
+    price: 300
+tax:
+  ec:
+    name: EC sales
+    rate: 0
