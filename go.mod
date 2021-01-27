@@ -8,6 +8,6 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/afero v1.1.2
 	github.com/spf13/cobra v1.0.0
-	github.com/stretchr/testify v1.3.0 // indirect
+	github.com/stretchr/testify v1.3.0
 	gopkg.in/yaml.v2 v2.2.2
 )

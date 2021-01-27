@@ -22,13 +22,15 @@ type Address struct {
 }
 
 type Order struct {
-	Lines     []OrderLine `yaml:"lines"`
-	Subtotal  string      `yaml:"subtotal"`
-	TaxName   string      `yaml:"tax-name"`
-	TaxRate   string      `yaml:"tax-rate"`
-	TaxAmount string      `yaml:"tax-amount"`
-	Total     string      `yaml:"total"`
+	Lines     OrderLines `yaml:"lines"`
+	Subtotal  string     `yaml:"subtotal"`
+	TaxName   string     `yaml:"tax-name"`
+	TaxRate   string     `yaml:"tax-rate"`
+	TaxAmount string     `yaml:"tax-amount"`
+	Total     string     `yaml:"total"`
 }
+
+type OrderLines []OrderLine
 
 type OrderLine struct {
 	Item     string `yaml:"item"`
@@ -66,5 +68,5 @@ type Metadata struct {
 
 type Tax struct {
 	Name string  `yaml:"name"`
-	Rate float32 `yaml:"rate"`
+	Rate float64 `yaml:"rate"`
 }

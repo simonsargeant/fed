@@ -2,6 +2,8 @@ package config
 
 import (
 	"fmt"
+	"math"
+	"sort"
 
 	"github.com/simonsargeant/fed/internal/template"
 )
@@ -19,7 +21,9 @@ func (i Items) CreateOrder(items map[string]int, currency string, tax Tax) (temp
 	var subtotal Price
 	var taxAmount Price
 	var total Price
+	fmt.Println("Start")
 	for name, quantity := range items {
+		fmt.Printf("%s: %d\n", name, quantity)
 		item, ok := i[name]
 		if !ok {
 			return template.Order{}, fmt.Errorf("item %q not found", name)
@@ -28,14 +32,13 @@ func (i Items) CreateOrder(items map[string]int, currency string, tax Tax) (temp
 		lineTotal := Price(quantity) * item.Price
 		subtotal += lineTotal
 
-		taxAmount := Price(0.0)
+		itemTax := Price(0.0)
 		if tax.Rate != 0.0 {
-			taxAmount := Price(float32(lineTotal) * tax.Rate / 100.0)
-			lineTotal += taxAmount
+			itemTax = Price(math.Round(float64(lineTotal) * tax.Rate / 100.0))
 		}
 
-		taxAmount += taxAmount
-		total += lineTotal
+		taxAmount += itemTax
+		total += lineTotal + itemTax
 
 		lines = append(lines, template.OrderLine{
 			Item:     item.Name,
@@ -45,6 +48,10 @@ func (i Items) CreateOrder(items map[string]int, currency string, tax Tax) (temp
 		})
 
 	}
+
+	sort.Slice(lines, func(i, j int) bool {
+		return lines[i].Item < lines[j].Item
+	})
 
 	order := template.Order{
 		Lines:     lines,

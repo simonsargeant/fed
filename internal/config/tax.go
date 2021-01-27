@@ -8,7 +8,7 @@ import (
 
 type Tax struct {
 	Name string  `yaml:"name"`
-	Rate float32 `yaml:"rate"`
+	Rate float64 `yaml:"rate"`
 }
 
 func (t Tax) ToTemplate() template.Tax {
