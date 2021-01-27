@@ -21,9 +21,7 @@ func (i Items) CreateOrder(items map[string]int, currency string, tax Tax) (temp
 	var subtotal Price
 	var taxAmount Price
 	var total Price
-	fmt.Println("Start")
 	for name, quantity := range items {
-		fmt.Printf("%s: %d\n", name, quantity)
 		item, ok := i[name]
 		if !ok {
 			return template.Order{}, fmt.Errorf("item %q not found", name)
