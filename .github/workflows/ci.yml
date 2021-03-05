@@ -39,7 +39,7 @@ jobs:
           go-version: 1.15
       - run: ./scripts/release.sh
         env:
-          IMAGE_TAG: ${{env.GITHUB_SHA}}
+          IMAGE_TAG: ${{github.sha}}
           DOCKER_USER: simonsargeant
           DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
           DOCKER_HOST: ""
