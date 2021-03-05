@@ -2,4 +2,9 @@
 set -eufo pipefail
 IFS=$'\t\n'
 
-cp ./bin/fed ~/bin/fed
+# Compile the binary to run locally and move to /usr/local/bin
+
+go build -o ./bin/fed ./cmd/fed
+
+cp ./bin/fed /usr/local/bin/fed
+

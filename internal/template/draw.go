@@ -45,7 +45,9 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 	d.pdf.SetX(x)
 	d.pdf.SetY(y)
 	d.DebugRect(x, y, 200, 20)
-	d.pdf.CellWithOption(NewRect(200, 20), info.Company.Name, NewTopLeft())
+	if err := d.pdf.CellWithOption(NewRect(200, 20), info.Company.Name, NewTopLeft()); err != nil {
+		return fmt.Errorf("write cell at (%f, %f): %w", x, y, err)
+	}
 
 	err = d.pdf.SetFont("font", "", 10)
 	if err != nil {
@@ -54,7 +56,7 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 
 	y += 20
 
-	x, y, err = d.PrintList(NewTopLeft(), func(x, y float64) (float64, float64) {
+	_, y, err = d.PrintList(NewTopLeft(), func(x, y float64) (float64, float64) {
 		return x, y + 12
 	}, x, y, 200, 12,
 		info.Company.TaxID,
@@ -98,7 +100,7 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 		})
 	}
 
-	x, y, err = d.DrawTable(x, y, []float64{315, 90, 60, 90}, tableLines)
+	_, y, err = d.DrawTable(x, y, []float64{315, 90, 60, 90}, tableLines)
 
 	if err != nil {
 		return fmt.Errorf("draw table: %w", err)
@@ -106,7 +108,7 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 
 	x = 395
 	yTotals := y
-	x, y, err = d.PrintList(NewTopRight(), func(x, y float64) (float64, float64) {
+	x, _, err = d.PrintList(NewTopRight(), func(x, y float64) (float64, float64) {
 		return x, y + 14
 	}, x, y, 90, 14,
 		"Subtotal:",
@@ -115,9 +117,13 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 		"Total:",
 	)
 
+	if err != nil {
+		return fmt.Errorf("print list: %w", err)
+	}
+
 	x += 90
 	y = yTotals
-	x, y, err = d.PrintList(NewTopRight(), func(x, y float64) (float64, float64) {
+	_, y, err = d.PrintList(NewTopRight(), func(x, y float64) (float64, float64) {
 		return x, y + 14
 	}, x, y, 90, 14,
 		info.Order.Subtotal,
@@ -126,9 +132,13 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 		info.Order.Total,
 	)
 
+	if err != nil {
+		return fmt.Errorf("print list: %w", err)
+	}
+
 	x = 20
 	y += 12
-	x, y, err = d.PrintList(NewTopLeft(), func(x, y float64) (float64, float64) {
+	_, _, err = d.PrintList(NewTopLeft(), func(x, y float64) (float64, float64) {
 		return x, y + 12
 	}, x, y, 300, 12,
 		info.Notes,
@@ -152,7 +162,10 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 	d.pdf.SetX(x)
 	d.pdf.SetY(y)
 	d.DebugRect(x, y, 200, 40)
-	d.pdf.CellWithOption(NewRect(200, 40), "Invoice", NewTopRight())
+
+	if err := d.pdf.CellWithOption(NewRect(200, 40), "Invoice", NewTopRight()); err != nil {
+		return fmt.Errorf("write cell at (%f, %f): %w", x, y, err)
+	}
 
 	err = d.pdf.SetFont("font", "", 10)
 	if err != nil {
@@ -161,7 +174,7 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 
 	y += 50
 
-	x, y, err = d.PrintList(NewTopRight(), func(x, y float64) (float64, float64) {
+	_, _, err = d.PrintList(NewTopRight(), func(x, y float64) (float64, float64) {
 		return x, y + 12
 	}, x, y, 200, 12,
 		fmt.Sprintf("No: %04d", info.Metadata.Number),
@@ -173,7 +186,9 @@ func (d Drawer) Draw(info Invoice, fontPath string, out io.Writer) error {
 		return fmt.Errorf("print invoice metadata: %w", err)
 	}
 
-	d.pdf.Write(out)
+	if err := d.pdf.Write(out); err != nil {
+		return fmt.Errorf("write pdf to output: %w", err)
+	}
 
 	return nil
 }
@@ -225,7 +240,7 @@ func (d Drawer) DrawTable(x, y float64, cellWidth []float64, lines [][]string) (
 		}
 
 		var err error
-		x, y, err = d.HorizontalList(func(i int) gopdf.CellOption {
+		_, y, err = d.HorizontalList(func(i int) gopdf.CellOption {
 			if i == 0 {
 				return NewMiddleLeft()
 			}
