@@ -7,7 +7,7 @@ jobs:
     container: "golangci/golangci-lint:v1.36.0"
     steps:
       - uses: actions/checkout@v2
-      - run: ./scripts/check.sh
+      - run: ./scripts/code-check.sh
   shell-check:
     runs-on: ubuntu-latest
     # Github runners have shellcheck already
