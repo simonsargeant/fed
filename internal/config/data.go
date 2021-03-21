@@ -33,9 +33,7 @@ func (d Data) Create(n int, t time.Time, clientName string, items map[string]int
 		return "", template.Invoice{}, fmt.Errorf("create order for %q: %s", clientName, err)
 	}
 
-	year, month, _ := t.Date()
-	start := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC).Local()
-	end := time.Date(year, month+1, -1, 0, 0, 0, 0, time.UTC).Local()
+	start, end := MonthPeriod(t)
 
 	return fmt.Sprintf("%s%04d", client.InvoicePrefix, n), template.Invoice{
 		Metadata: template.Metadata{
@@ -50,9 +48,4 @@ func (d Data) Create(n int, t time.Time, clientName string, items map[string]int
 		Order:   lines,
 		Notes:   fmt.Sprintf("This invoice refers to the period %s to %s", printDate(start), printDate(end)),
 	}, nil
-}
-
-func printDate(t time.Time) string {
-	year, month, day := t.Date()
-	return fmt.Sprintf("%02d/%02d/%d", day, month, year)
 }

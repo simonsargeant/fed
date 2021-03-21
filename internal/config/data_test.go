@@ -152,7 +152,7 @@ func TestData_Create(t *testing.T) {
 					IssueDate: "22/02/2020",
 					PayByDate: "22/03/2020",
 				},
-				Notes: "This invoice refers to the period 01/02/2020 to 28/02/2020",
+				Notes: "This invoice refers to the period 01/02/2020 to 29/02/2020",
 				Order: template.Order{
 					Lines: []template.OrderLine{
 						{
